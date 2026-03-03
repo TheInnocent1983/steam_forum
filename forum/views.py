@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Game, Topic
+from .forms import CommentForm
+
 
 
 def game_list(request):
@@ -14,5 +16,24 @@ def game_detail(request, pk):
 
 def topic_detail(request, pk):
     topic = get_object_or_404(Topic, pk=pk)
-    return render(request, "forum/topic_detail.html", {"topic": topic})
+
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect("topic_detail", pk=topic.pk)
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.topic = topic
+            comment.author = request.user
+            comment.save()
+            return redirect("topic_detail", pk=topic.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, "forum/topic_detail.html", {
+        "topic": topic,
+        "form": form
+    })
+
 

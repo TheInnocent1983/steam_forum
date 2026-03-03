@@ -1,10 +1,82 @@
-<h1>Games</h1>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-{% for game in games %}
-    <p>
-        <a href="{% url 'game_detail' game.pk %}">
-            {{ game.name }}
-        </a>
-    </p>
-{% endfor %}
+<style>
+    /* Основной фон как у темной темы GitHub */
+    body {
+        background-color: #0d1117; 
+        color: #c9d1d9;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+    }
 
+    .container {
+        max-width: 900px; /* Ограничиваем ширину, чтобы контент не разъезжался */
+    }
+
+    h1 {
+        color: #f0f6fc;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    /* Стилизация карточек под GitHub Dark */
+    .card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        transition: border-color 0.2s;
+    }
+
+    .card:hover {
+        border-color: #8b949e; /* Подсветка при наведении */
+    }
+
+    .card-title {
+        color: #58a6ff; /* Синий цвет ссылок GitHub */
+    }
+
+    .card-text.text-muted {
+        color: #8b949e !important; /* Серый текст описания */
+    }
+
+    /* Кнопка в стиле GitHub */
+    .btn-outline-primary {
+        color: #58a6ff;
+        border-color: #30363d;
+        background-color: #21262d;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #30363d;
+        border-color: #8b949e;
+        color: #f0f6fc;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="mb-5">Библиотека игр</h1>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+        {% for game in games %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ game.name }}</h5>
+                        <p class="card-text text-muted">Обсуждения и новости</p>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'game_detail' game.pk %}" class="btn btn-outline-primary w-100">
+                            Перейти к форуму
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
