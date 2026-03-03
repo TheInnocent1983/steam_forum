@@ -1,0 +1,10 @@
+<h1>Games</h1>
+
+{% for game in games %}
+    <p>
+        <a href="{% url 'game_detail' game.pk %}">
+            {{ game.name }}
+        </a>
+    </p>
+{% endfor %}
+

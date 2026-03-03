@@ -1,0 +1,8 @@
+<h1>{{ topic.title }}</h1>
+
+<h2>Comments:</h2>
+
+{% for comment in topic.comments.all %}
+    <p>{{ comment.content }} — {{ comment.author }}</p>
+{% endfor %}
+
