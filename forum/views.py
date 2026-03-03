@@ -4,8 +4,6 @@ from .forms import CommentForm
 from .forms import RegisterForm
 
 
-
-
 def game_list(request):
     games = Game.objects.all()
     return render(request, "forum/game_list.html", {"games": games})
