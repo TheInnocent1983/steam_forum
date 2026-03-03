@@ -1,110 +1,100 @@
-{% extends 'forum/base.html' %}
-
-{% block title %}{{ topic.title }}{% endblock %}
-
-{% block head %}
+{% extends 'forum/base.html' %} {% block title %}{{ topic.title }}{% endblock %} {% block head %}
 <style>
-    body {
-        background-color: #0d1117;
-        color: #c9d1d9;
-    }
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
 
-    /* Push content below fixed navbar */
-    .page-content {
-        margin-top: 90px;
-    }
+  /* Push content below fixed navbar */
+  .page-content {
+    margin-top: 90px;
+  }
 
-    /* Dark cards */
-    .card-dark {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        color: #c9d1d9;
-    }
+  /* Dark cards */
+  .card-dark {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+  }
 
-    .card-dark:hover {
-        border-color: #8b949e;
-    }
+  .card-dark:hover {
+    border-color: #8b949e;
+  }
 
-    .text-muted {
-        color: #8b949e !important;
-    }
+  .text-muted {
+    color: #8b949e !important;
+  }
 
-    .comment-author {
-        color: #58a6ff;
-    }
+  .comment-author {
+    color: #58a6ff;
+  }
 
-    /* Dark form area */
-    .reply-box {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-    }
+  /* Dark form area */
+  .reply-box {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+  }
 
-    textarea, input {
-        background-color: #0d1117 !important;
-        color: #c9d1d9 !important;
-        border: 1px solid #30363d !important;
-    }
+  textarea,
+  input {
+    background-color: #0d1117 !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+  }
 
-    textarea:focus, input:focus {
-        border-color: #58a6ff !important;
-        box-shadow: none !important;
-    }
+  textarea:focus,
+  input:focus {
+    border-color: #58a6ff !important;
+    box-shadow: none !important;
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="container page-content">
+  <h1 class="display-6 mb-4">{{ topic.title }}</h1>
 
-    <h1 class="display-6 mb-4">{{ topic.title }}</h1>
+  <div class="mb-5">
+    <h5 class="border-bottom pb-2 mb-3 text-muted">Комментарии ({{ topic.comments.count }})</h5>
 
-    <div class="mb-5">
-        <h5 class="border-bottom pb-2 mb-3 text-muted">
-            Комментарии ({{ topic.comments.count }})
-        </h5>
-        
-        {% for comment in topic.comments.all %}
-            <div class="card card-dark mb-3 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="fw-bold comment-author">
-                            @{{ comment.author.username }}
-                        </span>
-                        <span class="text-muted small">
-                            {{ comment.created_at|date:"d M Y, H:i" }}
-                        </span> 
-                    </div>
-                    <p class="card-text">{{ comment.content }}</p>
-                </div>
-            </div>
-        {% empty %}
-            <p class="text-muted">Пока нет комментариев.</p>
-        {% endfor %}
-    </div>
-
-    <div class="card reply-box shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Оставить ответ</h5>
-
-            {% if user.is_authenticated %}
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.content }}
-                    </div>
-                    <button type="submit" class="btn btn-success px-4">
-                        Опубликовать
-                    </button>
-                </form>
-            {% else %}
-                <div class="alert alert-secondary mb-0">
-                    Пожалуйста, 
-                    <a href="{% url 'login' %}" class="text-info">Login</a>, 
-                    чтобы участвовать в дискуссии.
-                </div>
+    {% for comment in topic.comments.all %}
+    <div class="card card-dark mb-3 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="fw-bold comment-author"> @{{ comment.author.username }} </span>
+          <div>
+            <span class="text-muted small me-2">{{ comment.created_at|date:"d M Y, H:i" }}</span>
+            {% if user == comment.author %}
+            <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-secondary me-1"
+              >Edit</a
+            >
+            <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-danger">Delete</a>
             {% endif %}
+          </div>
         </div>
+        <p class="card-text">{{ comment.content }}</p>
+      </div>
     </div>
+    {% empty %}
+    <p class="text-muted">Пока нет комментариев.</p>
+    {% endfor %}
+  </div>
 
+  <div class="card reply-box shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Оставить ответ</h5>
+
+      {% if user.is_authenticated %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">{{ form.content }}</div>
+        <button type="submit" class="btn btn-success px-4">Опубликовать</button>
+      </form>
+      {% else %}
+      <div class="alert alert-secondary mb-0">
+        Пожалуйста,
+        <a href="{% url 'login' %}" class="text-info">Login</a>, чтобы участвовать в дискуссии.
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
-

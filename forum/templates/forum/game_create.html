@@ -1,0 +1,107 @@
+{% extends 'forum/base.html' %} {% block title %}Создать игру{% endblock %} {% block head %}
+<style>
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 80px auto;
+    background-color: #161b22;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+  }
+
+  h2 {
+    color: #f0f6fc;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  label {
+    color: #8b949e;
+    margin-bottom: 5px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 10px 12px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  /* Focus state */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #58a6ff;
+    color: #ffffff;
+  }
+
+  /* Fix textarea resize */
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* Make labels stack properly */
+  label {
+    display: block;
+    margin-bottom: 6px;
+    color: #8b949e;
+  }
+
+  .btn-primary {
+    background-color: #238636;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #2ea043;
+  }
+
+  .btn-secondary {
+    background-color: #30363d;
+    border: none;
+  }
+
+  .btn-secondary:hover {
+    background-color: #484f58;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="form-container shadow">
+  <h2>Создать новую игру</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      {{ form.name.label_tag }} {{ form.name }} {% if form.name.errors %}
+      <div class="text-danger small">{{ form.name.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.description.label_tag }} {{ form.description }} {% if form.description.errors %}
+      <div class="text-danger small">{{ form.description.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="{% url 'game_list' %}" class="btn btn-secondary"> Назад </a>
+
+      <button type="submit" class="btn btn-primary">Создать</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

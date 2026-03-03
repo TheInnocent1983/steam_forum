@@ -1,86 +1,87 @@
-{% extends 'forum/base.html' %}
-
-{% block title %}Библиотека игр{% endblock %}
-
-{% block head %}
+{% extends 'forum/base.html' %} {% block title %}Библиотека игр{% endblock %} {% block head %}
 <!-- Bootstrap is already included in base.html, so you can skip it unless you need extra CSS -->
 <style>
-    /* Основной фон как у темной темы GitHub */
-    body {
-        background-color: #0d1117; 
-        color: #c9d1d9;
-        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        display: flex;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-    }
+  /* Основной фон как у темной темы GitHub */
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+  }
 
-    .container {
-        max-width: 900px;
-    }
+  .container {
+    max-width: 900px;
+  }
 
-    h1 {
-        color: #f0f6fc;
-        font-weight: 600;
-        text-align: center;
-        margin-top: 40px;
-    }
+  h1 {
+    color: #f0f6fc;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 40px;
+  }
 
-    .card {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 6px;
-        transition: border-color 0.2s;
-    }
+  .card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+  }
 
-    .card:hover {
-        border-color: #8b949e;
-    }
+  .card:hover {
+    border-color: #8b949e;
+  }
 
-    .card-title {
-        color: #58a6ff;
-    }
+  .card-title {
+    color: #58a6ff;
+  }
 
-    .card-text.text-muted {
-        color: #8b949e !important;
-    }
+  .card-text.text-muted {
+    color: #8b949e !important;
+  }
 
-    .btn-outline-primary {
-        color: #58a6ff;
-        border-color: #30363d;
-        background-color: #21262d;
-    }
+  .btn-outline-primary {
+    color: #58a6ff;
+    border-color: #30363d;
+    background-color: #21262d;
+  }
 
-    .btn-outline-primary:hover {
-        background-color: #30363d;
-        border-color: #8b949e;
-        color: #f0f6fc;
-    }
+  .btn-outline-primary:hover {
+    background-color: #30363d;
+    border-color: #8b949e;
+    color: #f0f6fc;
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <h1 class="mb-5 text-center">Библиотека игр</h1>
 
+<div class="text-center mb-4">
+  <a href="{% url 'game_create' %}" class="btn btn-success px-4"> + Создать игру </a>
+</div>
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-    {% for game in games %}
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <div>
-                    <h5 class="card-title">{{ game.name }}</h5>
-                    <p class="card-text text-muted">Обсуждения и новости</p>
-                </div>
-                <div class="mt-3">
-                    <a href="{% url 'game_detail' game.pk %}" class="btn btn-outline-primary w-100">
-                        Перейти к форуму
-                    </a>
-                </div>
-            </div>
+  {% for game in games %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="card-title">{{ game.name }}</h5>
+          <p class="card-text text-muted">Обсуждения и новости</p>
         </div>
+        <div class="mt-3 d-flex flex-column gap-2">
+          <a href="{% url 'game_detail' game.pk %}" class="btn btn-outline-primary w-100">
+            Перейти к форуму
+          </a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'game_edit' game.pk %}" class="btn btn-warning w-100"> Редактировать </a>
+          {% endif %}
+          <a href="{% url 'game_delete' game.pk %}" class="btn btn-danger w-100"> Удалить </a>
+        </div>
+      </div>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}
-

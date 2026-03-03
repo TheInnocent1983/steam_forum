@@ -1,0 +1,46 @@
+{% extends 'forum/base.html' %} {% block title %}Удалить тему{% endblock %} {% block head %}
+<style>
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
+  .parent-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+  }
+  .form-container {
+    max-width: 700px;
+    background-color: #161b22;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+  }
+  .btn-danger {
+    background-color: #cf222e;
+    border: none;
+  }
+  .btn-secondary {
+    background-color: #30363d;
+    border: none;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="parent-container">
+  <div class="form-container shadow">
+    <h2>Удалить тему "{{ topic.title }}"?</h2>
+
+    <form method="POST">
+      {% csrf_token %} {{ form }}
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-danger w-50">Да, удалить</button>
+        <a href="{% url 'topic_detail' topic.pk %}" class="btn btn-secondary w-50 text-center"
+          >Отмена</a
+        >
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

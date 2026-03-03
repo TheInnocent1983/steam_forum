@@ -1,0 +1,47 @@
+{% extends 'forum/base.html' %} {% block title %}Редактировать комментарий{% endblock %}
+<!-- prettier-ignore-start -->
+{% block head %}
+<style>
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
+  .form-container {
+    max-width: 700px;
+    margin: 80px auto;
+    background-color: #161b22;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+  }
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 10px;
+    border-radius: 6px;
+  }
+</style>
+{% endblock head %}
+<!-- prettier-ignore-end -->
+{% block content %}
+<div class="form-container shadow">
+  <h2>Редактировать комментарий</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.content }} {% if form.content.errors %}
+      <div class="text-danger small">{{ form.content.errors }}</div>
+      {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="{% url 'topic_detail' comment.topic.pk %}" class="btn btn-secondary">Назад</a>
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
